@@ -15,10 +15,17 @@ dotenv.config()
 const app = Fastify({ logger: true })
 
 await app.register(cors, {
-  origin: ['http://localhost:5173', 'http://localhost:3000'],
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://jobtrack-frontend-ei14.onrender.com'
+  ],
   credentials: true
 })
-await app.register(multipart, { limits: { fileSize: 10 * 1024 * 1024 } })
+
+await app.register(multipart, {
+  limits: { fileSize: 10 * 1024 * 1024 }
+})
 
 app.register(authRoutes, { prefix: '/api' })
 app.register(resumeRoutes, { prefix: '/api' })
@@ -30,8 +37,14 @@ app.register(assistantRoutes, { prefix: '/api' })
 app.get('/health', async () => ({ status: 'ok' }))
 
 try {
-  await app.listen({ port: 4000, host: '0.0.0.0' })
-  console.log('🚀 Server running on http://localhost:4000')
+  const port = process.env.PORT || 4000
+
+  await app.listen({
+    port,
+    host: '0.0.0.0'
+  })
+
+  console.log(`🚀 Server running on port ${port}`)
 } catch (err) {
   app.log.error(err)
   process.exit(1)
