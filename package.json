@@ -1,0 +1,10 @@
+{
+  "name": "job-tracker-ai",
+  "version": "1.0.0",
+  "scripts": {
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "dev:backend": "cd backend && node server.js",
+    "dev:frontend": "cd frontend && npx vite",
+    "dev": "npm run dev:backend & npm run dev:frontend"
+  }
+}
